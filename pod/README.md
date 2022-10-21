@@ -126,3 +126,9 @@ The .metadata section is where you attach things such as names, labels, annotati
 
 The .spec section is where you define the containers the Pod will run. This is called the Pod template, and this example is defining a single-container Pod based on the nigelpoulton/k8sbook:1.0 image. It’s calling the container hello-ctr and exposing it on port 8080.
 If this was a multi-container Pod, you’d define additional containers in the .spec section.
+
+### Deploying Pods from a manifest file
+```
+kubectl apply -f pod.yml 
+```
+This is a good time to mention that Kubernetes will pull (download) images from Docker Hub by default.
