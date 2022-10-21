@@ -83,9 +83,46 @@ You define it in a declarative YAML object that you post to the API server and i
 ### Pods and scaling
 - All Pods run a single application container instance, making them an ideal unit of scaling – if you need to scale the app, you add or remove Pods. This is call horizontal scaling.
 - You never scale an app by adding more of the same application containers to a Pod
-## Pod theory summary
+### Pod theory summary
 1. PodsaretheatomicunitofschedulinginKubernetes
 2. Single-container Pods are the simplest. However, multi-container Pods are ideal for co-locating tightly coupled workloads and are fundamental to service meshes
 3. Podsgetscheduledonnodes(hostphysicalservers,VMs,cloudinstances),andyoucan’tscheduleasingle Pod to span multiple nodes
 4. PodsaredefineddeclarativelyinmanifestfilesyouposttotheAPIserver
 5. YoualmostalwaysdeployPodsviahigher-levelcontrollers
+
+## Multi-container Pods
+Multi-container Pods are a powerful pattern and heavily used in real-world environments.
+
+Both containers need to run in the same Pod so they have access to the same shared volume in the Pod’s shared execution environment.
+
+Kubernetes offers several well-defined multi-container Pod patterns.
+
+### Sidecare multi-container Pods
+It has a main application container and a sidecar container. It’s the job of the sidecar to augment or perform a secondary task for the main application container.
+
+### Adapter multi-container Pods
+The adapter pattern is a specific variation of the generic sidecar pattern where the helper container takes non- standardized output from the main container and rejigs it into a format required by an external system.
+
+### Ambassador multi-container Pods
+The ambassador pattern is another variation of the sidecar pattern. This time, the helper container brokers connectivity to an external system. In Kubernetes, ambassador containers interface with external systems on behalf of the main app container.
+
+### Init multi-container Pods
+The init pattern is not a form of sidecar. It runs a special init container that’s guaranteed to start and complete before your main app container. It’s also guaranteed to only run once.
+The main app container will not start until the init container completes.
+
+## Hands-on with Pods
+Straight away you can see four top-level resources:
+- kind
+- apiVersion 
+- metadata
+- spec
+
+The .kind field tells Kubernetes the type of object being defined. This file is defining a Pod object.
+
+apiVersion defines the schema version to use when creating the object. This file is defining a Pod object and
+telling Kubernetes to build it using the v1 Pod schema.
+
+The .metadata section is where you attach things such as names, labels, annotations, and a Namespace. The name helps you identify the object in the cluster, and the labels let you create loose couplings with other objects. Annotations can help integrate with 3rd-party tools and services. 
+
+The .spec section is where you define the containers the Pod will run. This is called the Pod template, and this example is defining a single-container Pod based on the nigelpoulton/k8sbook:1.0 image. It’s calling the container hello-ctr and exposing it on port 8080.
+If this was a multi-container Pod, you’d define additional containers in the .spec section.
