@@ -27,3 +27,29 @@ Delete the “hydra” Namespace.
 ```
 kubectl delete ns hydra
 ```
+
+## Deploying to Namespaces
+There are two ways to deploy objects to a specific Namespace:
+- Imperatively 
+- Declaratively
+
+The imperative method requires you to add the -n or --namespace flag to commands. The declarative method specifies the Namespace in the YAML manifest file.
+
+The application is defined in the shield-app.yml file in the namespaces folder. It defines a Pod.
+
+Deploy it with the following command. You don’t have to specify the Namespace on the command line.
+```
+kubectl apply -f shield-app.yml
+```
+
+## Clean-up
+Delete the shield app. Be sure to run the command from the directory where the shield-app.yml file is located.
+
+```
+kubectl delete -f shield-app.yml
+```
+
+Delete the shield Namespace.
+```
+kubectl delete ns shield
+```
