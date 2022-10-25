@@ -42,3 +42,10 @@ ReplicaSets are implemented as a controller running as a background reconciliati
 ## Create a Deployment
 
 ## Inspecting Deployments
+See details of Deployments and ReplicaSets.
+```
+kubectl get deploy hello-deploy
+
+```
+
+## Accessing the app
