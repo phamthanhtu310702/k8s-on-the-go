@@ -40,3 +40,5 @@ ReplicaSets are implemented as a controller running as a background reconciliati
 - Older ReplicaSets are wound down and no longer manage any Pods. However, their configurations still exist on the cluster, making them a great option for reverting to previous versions.
 - The process of a rollback is the opposite of a rollout – you wind one of the old ReplicaSets up while you wind the current one down
 ## Create a Deployment
+
+## Inspecting Deployments
