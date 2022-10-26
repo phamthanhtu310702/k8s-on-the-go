@@ -49,3 +49,45 @@ kubectl get deploy hello-deploy
 ```
 
 ## Accessing the app
+- The following YAML defines a Service that works with the Pod replicas previously deployed.
+
+- The Service is deployed, you can access the app by hitting any of the cluster nodes on port 30001
+
+## Perform scaling operations
+### Perform a rolling update
+- Rolling update on the app already deployed
+- it’s vital you understand that update operations are replacement operations. When you “update” a Pod, you’re actually terminating it and replacing it with a brand new one.
+- Pods are designed as immutable objects, so you never change or update existing ones.
+- There is also a nested .spec.strategy map telling Kubernetes you want this Deployment to:
+    As the desired state of the app requests 10 replicas, maxSurge: 1 means you’ll never have more than 11 replicas during the update process, and maxUnavailable: 1 means you’ll never have less than 9. The net result is a rollout that updates two Pods at a time.
+- The Deployment spec has a selector block. This is a list of labels the Deployment controller looks for when finding Pods to update during rollout operations
+- The Deployment’s label selector is immutable, so you can’t change it once it’s deployed.
+- With the updated manifest ready and saved, you can initiate the update by re-posting it to the API server. Be sure to add the --record flag 
+## Perform a rollback
+- You used the --record flag so Kubernetes would maintain a documented revision history. The following command shows the Deployment with two revisions.
+```
+kubectl rollout history deployment hello-deploy
+```
+- You know that rolling updates create new ReplicaSets, and that old ReplicaSets aren’t deleted. The fact the old ones still exist makes them ideal for executing rollbacks, which are the same as updates, just in reverse.
+
+- The following commands show the two ReplicaSet objects. The second command shows the config of the old one and that it still references the old image version
+```
+kubectl get rs
+```
+```
+kubectl describe rs hello-deploy-65cbc9474c
+```
+- The following example uses kubectl rollout to revert the application to revision 1. This is an imperative operation and not recommended. However, it’s convenient for quick rollbacks, just make sure you remember to update your source YAML files to reflect the changes you make.
+```
+kubectl rollout undo deployment hello-deploy --to-revision=1
+```
+
+## Rollouts and labels
+- You’ve already seen that Deployments and ReplicaSets use labels and selectors to find Pods
+## Clean-up
+```
+kubectl delete -f deploy.yml
+
+kubectl delete -f svc.yml
+
+```
