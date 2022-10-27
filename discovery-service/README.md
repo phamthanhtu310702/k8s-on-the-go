@@ -14,3 +14,6 @@ There are two major components to service discovery:
 - Namespaces let you partition the address space below the cluster domain.
 For example, creating a couple of Namespaces called dev and prod will give you two new address spaces.
 - Objects can connect to Services in the local Namespace using short names such as ent and cer. But connecting to objects in a remote Namespace requires FQDNs such as ent.dev.svc.cluster.local and cer.dev.svc.cluster.local.
+
+- All new Service objects are automatically registered with the cluster DNS, and all containers are pre-configured to use the cluster DNS for service discovery.
+The cluster DNS resolves Service names to ClusterIPs. These are stable virtual IPs on a special network called the service network. Although there are no routes to this network, the kube-proxy configures all cluster nodes to redirect traffic destined for the service network to Pod IPs on the Pod network.
