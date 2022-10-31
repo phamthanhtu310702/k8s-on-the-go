@@ -60,4 +60,4 @@ spec.containers.volume mounts the in-Pod ConfigMap volume to the container
 kubectl exec cmvol -- ls /etc/name
 ```
 
-## Hands-on with Secrets
+ConfigMaps is the Kubernetes native way of decoupling applications and config data.
