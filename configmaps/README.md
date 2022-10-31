@@ -40,4 +40,24 @@ kubectl apply -f singlemap.yml
 ```
 - ConfigMaps are extremely flexible and can be used to insert complex configurations, including JSON files and even scripts, into containers at run-time.
 ### Injecting ConfigMap data into Pods and containers
+- There are three main ways to inject ConfigMap data into a container:
+### ConfigMaps and environment variables
+- When the Pod is scheduled and the container started(envpod.yml), FIRSTNAME and LASTNAME will be created as standard Linux environment variables inside the containe
+- A drawback to using ConfigMaps with environment variables is that environment variables are static. This means updates made to the map are not reflected in running containers. For example, if you update the values of the given and family entries in the ConfigMap, environment variables in existing containers won’t see the updates. This is a major reason environment variables aren’t very good.
+### ConfigMaps and container startup commands
+- Using ConfigMaps with container startup commands is an extension of environment variables. As such, it suffers from the same limitations – updates to entries in the map will not be reflected in running containers.
+### ConfigMaps and volumes
+- Using ConfigMaps with volumes is the most flexible option. You can reference entire configuration files, as well as make updates to the ConfigMap and have them reflected in running containers. This means you can make changes to entries in a ConfigMap, after you’ve deployed a container, and those changes be seen in the container and available for running applications. The updates may take a minute or so to appear in the container.
+    - Create ConfigMaps
+    - Create ConfigMaps Volume in Pod template
+    - Mount Config vol into the container
+    - Entries in the Configmap will appear in the contianer as files
+spec.volumes creates in-Pod ConfigMap volume based on ConfigMap
+spec.containers.volume mounts the in-Pod ConfigMap volume to the container
 
+- Run the command to see the env variables
+```
+kubectl exec cmvol -- ls /etc/name
+```
+
+## Hands-on with Secrets
